@@ -21,7 +21,7 @@ export async function readQueue(broker: string, topic: string) {
         brokers: [broker]
     });
 
-    const consumer = kafka.consumer();
+    const consumer = kafka.consumer({groupId: 'test-group'});
     await consumer.connect();
     await consumer.subscribe({topic: topic, fromBeginning: true});
     await consumer.run({

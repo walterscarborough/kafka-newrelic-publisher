@@ -26,10 +26,10 @@ app.post('/enqueue', async (req: MessageRequest, res) => {
     res.send("ok");
 });
 
-app.get('/read-queue', async (req: MessageRequest, res) => {
+app.get('/read-queue', async (req, res) => {
     await readQueue(
-        req.body.broker,
-        req.body.topic
+        req.query.broker,
+        req.query.topic
     );
 
     res.send("ok");
