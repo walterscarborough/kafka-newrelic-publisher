@@ -35,4 +35,4 @@ app.get('/read-queue', async (req, res) => {
     res.send("ok");
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`Kafka-NewRelic-Publisher app listening on port ${port}!`));
