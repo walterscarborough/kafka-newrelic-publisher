@@ -6,7 +6,7 @@ export async function getNewRelicData(newRelicApiKey: string, newRelicAppGuid: s
           actor {
             entities(guids: "${newRelicAppGuid}") {
               name
-              nrdbQuery(nrql: "SELECT * FROM Transaction") {
+              nrdbQuery(nrql: "SELECT appName, duration FROM Transaction") {
                 results
               }
             }
@@ -25,7 +25,6 @@ export async function getNewRelicData(newRelicApiKey: string, newRelicAppGuid: s
             'API-Key': newRelicApiKey,
         }
     }).catch((error) => console.log(`axios error: ${error}`));
-
 
     // @ts-ignore
     const parsedResponseData = response.data.data.actor.entities[0];
