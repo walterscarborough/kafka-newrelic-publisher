@@ -6,7 +6,7 @@ export async function getNewRelicData(newRelicApiKey: string, newRelicAppGuid: s
           actor {
             entities(guids: "${newRelicAppGuid}") {
               name
-              nrdbQuery(nrql: "SELECT appName, duration FROM Transaction") {
+              nrdbQuery(nrql: "SELECT appName, duration FROM Transaction LIMIT 100") {
                 results
               }
             }
