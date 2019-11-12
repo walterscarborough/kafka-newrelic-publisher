@@ -6,8 +6,6 @@ import {enqueue, readQueue} from "./kafka-service";
 const app = express();
 app.use(express.json());
 
-const port = 3000;
-
 app.get('/read-newrelic', async (req: MessageRequest, res) => {
     await getNewRelicData(req.body.newRelicApiKey, req.body.newRelicAppGuid);
 
@@ -35,4 +33,5 @@ app.get('/read-queue', async (req, res) => {
     res.send("ok");
 });
 
+const port = (process.env.PORT || 3000);
 app.listen(port, () => console.log(`Kafka-NewRelic-Publisher app listening on port ${port}!`));
