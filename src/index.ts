@@ -1,15 +1,17 @@
 import express from "express";
 import {getNewRelicData} from "./new-relic-service";
-import {MessageRequest} from "./MessageRequest";
+import {MessageRequest} from "./message-request";
 import {enqueue, readQueue} from "./kafka-service";
+import {CustomDataMessageRequest} from "./custom-data-message-request";
+import {ReadNewRelicRequest} from "./read-new-relic-request";
 
 const app = express();
 app.use(express.json());
 
-app.get('/read-newrelic', async (req: MessageRequest, res) => {
-    await getNewRelicData(req.body.newRelicApiKey, req.body.newRelicAppGuid);
+app.get('/read-newrelic', async (req: ReadNewRelicRequest, res) => {
+    const data = await getNewRelicData(req.body.newRelicApiKey, req.body.newRelicAppGuid);
 
-    res.send('ok');
+    res.send(JSON.stringify(data));
 });
 
 app.post('/enqueue', async (req: MessageRequest, res) => {
@@ -19,6 +21,16 @@ app.post('/enqueue', async (req: MessageRequest, res) => {
         req.body.broker,
         req.body.topic,
         newRelicData
+    );
+
+    res.send(JSON.stringify(newRelicData));
+});
+
+app.post('/enqueue-custom-data', async (req: CustomDataMessageRequest, res) => {
+    await enqueue(
+        req.body.broker,
+        req.body.topic,
+        req.body.data,
     );
 
     res.send("ok");
