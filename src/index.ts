@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/read-newrelic', async (req: ReadNewRelicRequest, res) => {
-    const data = await getNewRelicData(req.body.newRelicApiKey, req.body.newRelicAppGuid);
+    const data = await getNewRelicData(req.query.newRelicApiKey, req.query.newRelicAppGuid);
 
     res.send(JSON.stringify(data));
 });

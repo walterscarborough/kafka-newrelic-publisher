@@ -1,5 +1,5 @@
 export interface ReadNewRelicRequest {
-    body: {
+    query: {
         newRelicApiKey: string;
         newRelicAppGuid: string;
     }
