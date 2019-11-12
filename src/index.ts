@@ -11,7 +11,7 @@ app.use(express.json());
 app.get('/read-newrelic', async (req: ReadNewRelicRequest, res) => {
     const data = await getNewRelicData(req.query.newRelicApiKey, req.query.newRelicAppGuid);
 
-    res.send(JSON.stringify(data));
+    res.json(data);
 });
 
 app.post('/enqueue', async (req: MessageRequest, res) => {
@@ -23,7 +23,7 @@ app.post('/enqueue', async (req: MessageRequest, res) => {
         newRelicData
     );
 
-    res.send(JSON.stringify(newRelicData));
+    res.json(newRelicData);
 });
 
 app.post('/enqueue-custom-data', async (req: CustomDataMessageRequest, res) => {
