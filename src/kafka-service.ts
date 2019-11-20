@@ -17,7 +17,13 @@ const tracer = new Tracer({
     localServiceName: 'kafka-newrelic-publisher'
 });
 
-export async function enqueue(broker: string, topic: string, newRelicData: object) {
+const kafkaInstances = {};
+
+function getCachedKafkaInstance(broker: string): Kafka {
+    if (kafkaInstances !== null && Object.keys(kafkaInstances).includes(broker)) {
+        return kafkaInstances[broker];
+    }
+
     const kafka = wrapKafkaJs(
         new Kafka({
             brokers: [broker]
@@ -26,6 +32,15 @@ export async function enqueue(broker: string, topic: string, newRelicData: objec
             tracer
         }
     );
+
+    kafkaInstances[broker] = kafka;
+
+    return kafka;
+}
+
+export async function enqueue(broker: string, topic: string, newRelicData: object) {
+
+    const kafka = getCachedKafkaInstance(broker);
 
     const producer = kafka.producer();
 
@@ -39,14 +54,7 @@ export async function enqueue(broker: string, topic: string, newRelicData: objec
 }
 
 export async function readQueue(broker: string, topic: string) {
-    const kafka = wrapKafkaJs(
-        new Kafka({
-            brokers: [broker]
-        }),
-        {
-            tracer
-        }
-    );
+    const kafka = getCachedKafkaInstance(broker);
 
     const consumer = kafka.consumer({groupId: 'test-group'});
     await consumer.connect();
