@@ -20,7 +20,7 @@ const tracer = new Tracer({
 const kafkaInstances = {};
 
 function getCachedKafkaInstance(broker: string): Kafka {
-    if (kafkaInstances !== null && Object.keys(kafkaInstances).includes(broker)) {
+    if (Object.keys(kafkaInstances).includes(broker)) {
         return kafkaInstances[broker];
     }
 
